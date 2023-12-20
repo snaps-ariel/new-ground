@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+echo 'husky checking ---'
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint
