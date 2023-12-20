@@ -53,4 +53,4 @@ Next14, React 18, node v20.10.0(lts), typescript
 - chore : 빌드 업무 수정, 패키지 매니저 수정
 
 ### code convention
-- [convention guide](https://www.notion.so/snaps-corp/convention-guide-29ca9ab90aee474bb35d09b7835b3e4d?pvs=4)를 따름
+- [convention guide](https://www.notion.so/snaps-corp/convention-guide-29ca9ab90aee474bb35d09b7835b3e4d?pvs=4)를 따름정
