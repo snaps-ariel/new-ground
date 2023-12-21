@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### 문제정의
 
-## Getting Started
+1. 같은 도메인에도 불구하고 이벤트 및 프로모션 관련 기능들이 분산되어 있음
+    - 스냅스의 경우 이벤트 생성 및 날짜 관리는 BO에서 진행, 해당 번호에 대한 이벤트 상세페이지, 배너 등록등의 경우 그라운디에서 진행
+2. 기존 그라운디의 스냅스/오프미 구분이 명확하지 않아 고객(마케팅 팀)및 개발자 러닝 커브가 존재함
+    - 처음 온 사람의 경우 어디에 어떤 도메인의 기능이 있는지 알기 어려움
+3. 관리 서버가 분산되어 있어 오류 발생 시 원인을 빨리 찾기 어려움
+    - 일부 API는 프론트에서 관리, 일부는 백에서 관리
+4. 운영 시 한 프로모션에 대한 사항을 PC/Mobile에서 동일하게 진행하는데, 기능 및 관리처는 분산되어 있어, 등록 및 관리를 두 배로 진행해야 함
 
-First, run the development server:
+### 리뉴얼 포인트
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. 프로모션 관련 기능 통합 관리
+    - 프로모션 관련 관리 기능은 전부 그라운디에서, 관련 API는 백에서 관리 → 백에서 이벤트 생성기능 가져가고 나면 생성 기능은 아예 그라운디에서 제외
+2. 명확한 도메인 구분
+    - 오프미, 스냅스, KR, JP를 정확하게 구분하여 각 담당자들이 한눈에 사용하는 서비스를 알아볼 수 있고, 러닝 커브가 적도록 함
+3. 원스탑 이벤트 관리
+    - 이벤트를 기준으로 기능을 밀집시켜 한 이벤트에 대한 등록 사항을 한 번에 볼 수 있도록 함.
+4. 마케팅팀/개발자용 구분
+    - 개발팀에서만 사용하는 메뉴를 별도로 구분하여 혼선을 방지함.
+5. 라이브러리 사용 지양하여 유지보수 편리한 사이트를 만듦.
+6. 개발자용 탭에 이벤트 유형화, customFunction 목록 등 관리할 수 있는 기능 추가.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 개발 세팅 관련
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next14, React 18, node v20.10.0(lts), typescript
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Next.js - 가장 큰 이유인 SEO가 특별히 필요하지는 않지만, Routing, Data-fetching 등 편의성을 위해 사용
+- Zustand - 클라이언트 상태관리를 위해 사용. 리뉴얼을 진행하며 기존 레포에서 참고할 사항도 있는데 기존 소스가 redux로 되어있고, redux와 개념이 유사하나(하나의 store사용), 패키지가 훨씬 더 가볍고, 상태 제어와 관련된 사용이 손쉽기 때문에 사용. 보일러 플레이트 코드를 사용하지 않아도 됨.
 
-## Learn More
+  https://www.nextree.io/zustand/
 
-To learn more about Next.js, take a look at the following resources:
+- Swr - 서버 상태관리를 위해 사용. 기존에 리덕스에서 모두 관리하였었으나 서버 상태를 분리함으로서 관심사가 분리되고 선언적인 프로그래밍이 가능해짐. 추가로 동일한 API 요청이 여러 번 호출될 겨우 한번만 실행, 데이터가 업데이트 되어야 하는 시점에 알아서 업데이트 등 다양한 기능을 제공하기 위해 사용. Next 공식문서에도 swr 사용을 적극 권장하고 있음.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  https://fe-developers.kakaoent.com/2022/220224-data-fetching-libs/
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Styling - Styled component vs css module 결정 필요
 
-## Deploy on Vercel
+  styled-component의 경우 css-in-js 이기 때문에, 자바스크립트 런타임에 실행됨. 따라서 이 방식을 사용하면 클라이언트 컴포넌트만 사용가능. Next에서 아직 공식적으로 서버 컴포넌트 지원이 안되고 있음. (클라이언트 컴포넌트가 렌더링 되고 하이드레이션 되기 전에 자바스크립트 런타임에서 스타일이 입혀짐)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  css module or tailwind
+- webstorm 사용시 다음 링크 보고 idea 설정 추가로 해주기
+  [https://velog.io/@seungchan__y/Webstorm에서-ESLint-Prettier-적용하기](https://velog.io/@seungchan__y/Webstorm%EC%97%90%EC%84%9C-ESLint-Prettier-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### commit 컨벤션
+
+- feat : 새로운 기능 추가
+- fix : 버그 수정
+- docs : 문서 수정
+- style : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+- refactor : 코드 리펙토링
+- test : 테스트 코드, 리펙토링 테스트 코드 추가
+- chore : 빌드 업무 수정, 패키지 매니저 수정
+
+### code convention
+- [convention guide](https://www.notion.so/snaps-corp/convention-guide-29ca9ab90aee474bb35d09b7835b3e4d?pvs=4)를 따름
