@@ -1,8 +1,6 @@
 import '../globals.css';
 import { Metadata } from 'next';
-import SWRConfigContext from '@/context/SWRConfigContext';
 import { Open_Sans } from 'next/font/google';
-import { useRouter } from 'next/router';
 import { Inter } from 'next/font/google';
 
 const openSans = Open_Sans({ subsets: ['latin'] });

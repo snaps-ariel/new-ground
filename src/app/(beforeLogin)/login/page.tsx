@@ -1,6 +1,4 @@
 'use client';
-import useApiRequest from '@/hooks/useApiRequest';
-import useSWR from 'swr';
 
 export default function Login() {
   // const { data, mutate } = useSWR(
