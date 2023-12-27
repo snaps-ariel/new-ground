@@ -34,7 +34,7 @@ Next14, React 18, node v20.10.0(lts), typescript
 
   https://fe-developers.kakaoent.com/2022/220224-data-fetching-libs/
 
-- Styling - Styled component vs css module 결정 필요
+- Styling - 빠르고 서버 컴포넌트 지원이 되는 tailwind로 스타일링.
 
   styled-component의 경우 css-in-js 이기 때문에, 자바스크립트 런타임에 실행됨. 따라서 이 방식을 사용하면 클라이언트 컴포넌트만 사용가능. Next에서 아직 공식적으로 서버 컴포넌트 지원이 안되고 있음. (클라이언트 컴포넌트가 렌더링 되고 하이드레이션 되기 전에 자바스크립트 런타임에서 스타일이 입혀짐)
 
