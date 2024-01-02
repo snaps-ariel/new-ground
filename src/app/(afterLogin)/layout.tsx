@@ -1,10 +1,10 @@
-import './globals.css';
+import '../globals.css';
 import { Metadata } from 'next';
-import SWRConfigContext from '@/context/SWRConfigContext';
 import { Open_Sans } from 'next/font/google';
 import { Inter } from 'next/font/google';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -21,10 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={openSans.className}>
-      <body className={inter.className}>
-        <SWRConfigContext>{children}</SWRConfigContext>
-      </body>
-    </html>
+    <>
+      <header className="sticky top-0 bg-black z-10 border-b">
+        <div className="max-w-screen-xl mx-auto">navbar</div>
+      </header>
+      <main className="w-full flex justify-center max-w-screen-xl mx-auto">
+        {children}
+      </main>
+    </>
   );
 }

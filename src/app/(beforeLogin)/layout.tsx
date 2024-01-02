@@ -1,11 +1,9 @@
-import './globals.css';
+import '../globals.css';
 import { Metadata } from 'next';
 import SWRConfigContext from '@/context/SWRConfigContext';
 import { Open_Sans } from 'next/font/google';
-import { Inter } from 'next/font/google';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
@@ -22,8 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.className}>
-      <body className={inter.className}>
-        <SWRConfigContext>{children}</SWRConfigContext>
+      <body className="w-full bg-neutral-50 overflow-auto">
+        <main className="relative w-full h-full">
+          <SWRConfigContext>{children}</SWRConfigContext>
+        </main>
       </body>
     </html>
   );
