@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 export default function HomePage() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isLoggedIn = true;
+  const isLoggedIn = false;
 
   useEffect(() => {
     if (!isLoggedIn) {
