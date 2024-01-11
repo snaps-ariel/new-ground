@@ -8,7 +8,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 import useGetEventsQuery from '@/queries/useGetEventsQuery';
 
-const columnDefs: ColDef = [
+const columnDefs: ColDef[] = [
   {
     field: 'idx',
     headerName: '순번',
