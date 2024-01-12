@@ -7,30 +7,29 @@ import {
 } from 'react-hook-form';
 import Image from 'next/image';
 import Check from '../../../public/check.svg';
+import { ILoginUser } from '@/app/model/user';
 
 type Props = {
   name: 'loginId' | 'password';
-  label?: string;
-  type?: string;
   placeholder: string;
+  type?: string;
   disabled?: boolean;
   readOnly?: boolean;
   register: UseFormRegisterReturn;
-  errors: FieldErrors<any>;
-  control: Control<any>;
+  errors: FieldErrors;
+  control: Control<ILoginUser>;
 };
 
-const InputField = ({
+export default function InputField({
   name,
-  label,
-  type = 'text',
   placeholder,
+  type = 'text',
   disabled = false,
   readOnly = false,
   register,
   errors,
   control,
-}: Props) => {
+}: Props) {
   const value = useWatch({
     control,
     name,
@@ -42,13 +41,13 @@ const InputField = ({
 
   return (
     <div className="relative block text-left">
-      <label htmlFor={name}>{label}</label>
       <input
         className="w-full h-[50px] border-gray-300 border-b"
         type={type}
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}
+        autoComplete={'on'}
         {...register}
       />
 
@@ -74,6 +73,4 @@ const InputField = ({
       {/*)}*/}
     </div>
   );
-};
-
-export default InputField;
+}
