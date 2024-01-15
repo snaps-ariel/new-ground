@@ -17,7 +17,6 @@ function validateUser(request: NextRequest): Promise<Response> {
 export async function auth(request: NextRequest) {
   const response = await validateUser(request);
   if (response.status === 200) {
-    console.log('response', response);
     return NextResponse.redirect(new URL('/home', request.nextUrl.origin));
   }
   return NextResponse.redirect(new URL('/login', request.nextUrl.origin));

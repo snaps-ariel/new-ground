@@ -65,12 +65,6 @@ export default function InputField({
           <Image src={Check} alt={'check'} />
         </div>
       )}
-
-      {/*{isMaxRequiredLength && (*/}
-      {/*  <div className="count">*/}
-      {/*    {input.value.length}/{maxLength}*/}
-      {/*  </div>*/}
-      {/*)}*/}
     </div>
   );
 }

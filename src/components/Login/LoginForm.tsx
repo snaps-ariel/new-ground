@@ -2,17 +2,17 @@
 
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
 import InputField from '@/common/fields/inputField';
 import { required, validEmail } from '@/utils/validate';
-import { useRouter } from 'next/navigation';
 import { useLogin } from '@/hooks/useUsers';
 import { ILoginUser } from '@/app/model/user';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { data, trigger, isMutating } = useLogin();
+  const { trigger: triggerLogin, isMutating: isMutatingLogin } = useLogin();
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<ILoginUser> = useCallback(
     async (values) => {
       try {
-        const userInfoRes = await trigger({
+        const userInfoRes = await triggerLogin({
           loginId: values.loginId,
           password: values.password,
         });
@@ -44,7 +44,7 @@ export default function LoginForm() {
         console.log('err', err);
       }
     },
-    [trigger],
+    [triggerLogin, router],
   );
 
   const isValid =
@@ -61,7 +61,7 @@ export default function LoginForm() {
         })}
         errors={errors}
         control={control}
-        disabled={isMutating}
+        disabled={isMutatingLogin}
       />
 
       <InputField
@@ -73,7 +73,7 @@ export default function LoginForm() {
         })}
         errors={errors}
         control={control}
-        disabled={isMutating}
+        disabled={isMutatingLogin}
       />
 
       {!!errorMessage && (

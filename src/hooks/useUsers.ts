@@ -1,6 +1,7 @@
-import { getHeader } from '@/utils/storage';
-import useSWRMutation from 'swr/mutation';
 import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+
+import { getHeader } from '@/utils/storage';
 
 export async function getUser(url: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
@@ -12,7 +13,7 @@ export async function getUser(url: string) {
   return await res.json();
 }
 
-export async function updateUser(url: string, { arg }: { arg: string }) {
+export async function updateUser(url: string, { arg }: { arg: object }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
     method: 'POST',
     headers: getHeader(),
