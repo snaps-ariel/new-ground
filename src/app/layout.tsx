@@ -22,9 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.className}>
-      <body className={inter.className}>
-        <SWRConfigContext>{children}</SWRConfigContext>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
