@@ -1,18 +1,13 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 import InputField from '@/common/fields/inputField';
 import { required, validEmail } from '@/utils/validate';
-import { useLogin } from '@/hooks/useUsers';
 import { ILoginUser } from '@/app/model/user';
 
-export default function LoginForm() {
-  const router = useRouter();
-  const { trigger: triggerLogin, isMutating: isMutatingLogin } = useLogin();
+export default function LoginForm({ login }) {
   const {
     register,
     handleSubmit,
@@ -20,32 +15,14 @@ export default function LoginForm() {
     formState: { errors },
     setError,
     control,
+    reset,
   } = useForm<ILoginUser>({ mode: 'onChange' });
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const onSubmit: SubmitHandler<ILoginUser> = useCallback(
-    async (values) => {
-      try {
-        const userInfoRes = await triggerLogin({
-          loginId: values.loginId,
-          password: values.password,
-        });
-
-        if (userInfoRes.token) {
-          Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', userInfoRes.token, {
-            expires: 3,
-            path: '/',
-          });
-          return router.push('/home');
-        } else {
-          return setErrorMessage(userInfoRes.errorMessage);
-        }
-      } catch (err) {
-        console.log('err', err);
-      }
-    },
-    [triggerLogin, router],
-  );
+  const onSubmit: SubmitHandler<ILoginUser> = async (data) => {
+    await login(data.email, data.password);
+    reset();
+  };
 
   const isValid =
     !!watch('loginId') && !!watch('password') && Object.keys(errors).length < 1;
@@ -61,7 +38,6 @@ export default function LoginForm() {
         })}
         errors={errors}
         control={control}
-        disabled={isMutatingLogin}
       />
 
       <InputField
@@ -73,7 +49,6 @@ export default function LoginForm() {
         })}
         errors={errors}
         control={control}
-        disabled={isMutatingLogin}
       />
 
       {!!errorMessage && (
