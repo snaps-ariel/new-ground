@@ -5,10 +5,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-import InputField from '@/common/fields/inputField';
 import { required, validEmail } from '@/utils/validate';
 import { useLogin } from '@/hooks/useUsers';
 import { ILoginUser } from '@/app/model/user';
+import Input from '@/form/Input';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -52,7 +52,7 @@ export default function LoginForm() {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <InputField
+      <Input
         name={'loginId'}
         placeholder={'이메일'}
         register={register('loginId', {
@@ -64,7 +64,7 @@ export default function LoginForm() {
         disabled={isMutatingLogin}
       />
 
-      <InputField
+      <Input
         name={'password'}
         type={'password'}
         placeholder={'비밀번호'}

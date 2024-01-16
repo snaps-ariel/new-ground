@@ -1,4 +1,3 @@
-import { breakLines } from '@/utils/string';
 import {
   Control,
   FieldErrors,
@@ -6,8 +5,10 @@ import {
   useWatch,
 } from 'react-hook-form';
 import Image from 'next/image';
-import Check from '../../../public/check.svg';
+
 import { ILoginUser } from '@/app/model/user';
+import { breakLines } from '@/utils/string';
+import Check from '../../public/check.svg';
 
 type Props = {
   name: 'loginId' | 'password';
@@ -20,7 +21,7 @@ type Props = {
   control: Control<ILoginUser>;
 };
 
-export default function InputField({
+export default function Input({
   name,
   placeholder,
   type = 'text',
