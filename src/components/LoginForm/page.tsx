@@ -4,14 +4,22 @@ import InputField from '@/common/fields/inputField';
 import { required, validEmail } from '@/utils/validate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useApiRequest, useMutateApiRequest } from '@/hooks/useApiRequest';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axiosClient from '@/utils/axios';
+import useSWR, { useSWRConfig } from 'swr';
+import { fetcher } from '@/utils/fetcher';
+import { useLogin } from '@/api/login';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 type Inputs = {
-  loginId?: string;
-  password?: string;
+  loginId: string;
+  password: string;
 };
 
 export default function LoginForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -21,30 +29,44 @@ export default function LoginForm() {
     control,
   } = useForm<Inputs>({ mode: 'onBlur' });
 
-  const [loginUserInfo, setLoginUserInfo] = useState<Inputs>({});
+  const {
+    data: loginData,
+    error: loginError,
+    isMutating,
+    trigger: login,
+    reset,
+  } = useLogin();
 
-  const api = 'v1/hello';
-  const { trigger } = useMutateApiRequest(
-    'v1/account/user/login',
-    loginUserInfo,
-  );
+  console.log(loginData);
 
-  const result = useApiRequest('v1/hello');
+  // const api = 'v1/hello';
+  // const { trigger } = useMutateApiRequest(
+  //   'v1/account/user/login',
+  //   loginUserInfo,
+  // );
+
+  // const result = useApiRequest('v1/hello');
+
   const onSubmit: SubmitHandler<Inputs> = (values) => {
-    // setLoginUserInfo({
-    //   loginId: values.loginId,
-    //   password: values.password,
-    // });
-    // e.preventDefault();
-    // trigger();
-    // setError(
-    //   'loginId', // 에러 핸들링할 input요소 name
-    //   { message: '비밀번호가 일치하지 않습니다.' }, // 에러 메세지
-    //   { shouldFocus: true }, // 에러가 발생한 input으로 focus 이동
-    // );
-    console.log('submit values', values);
+    login({ loginId: values.loginId, password: values.password });
     return;
   };
+
+  useEffect(() => {
+    if (!loginData) return;
+
+    const { token } = loginData;
+    Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', token, {
+      expires: 3,
+      path: '/',
+    });
+    router.push('/home');
+  }, [loginData]);
+
+  useEffect(() => {
+    if (!loginError) return;
+    console.log(loginError.message);
+  }, [loginError]);
 
   const errorMessage = true;
   const isValid =
