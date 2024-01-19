@@ -1,18 +1,24 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-import { required, validEmail } from '@/utils/validate';
-import { useLogin } from '@/hooks/useUsers';
 import { ILoginUser } from '@/app/model/user';
+import { useLogin } from '@/api/login';
 import Input from '@/form/Input';
+
+import { required, validEmail } from '@/utils/validate';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { trigger: triggerLogin, isMutating: isMutatingLogin } = useLogin();
+  const {
+    data: loginData,
+    trigger: login,
+    isMutating: isMutatingLogin,
+    error: loginError,
+  } = useLogin();
   const {
     register,
     handleSubmit,
@@ -24,28 +30,30 @@ export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit: SubmitHandler<ILoginUser> = useCallback(
-    async (values) => {
-      try {
-        const userInfoRes = await triggerLogin({
-          loginId: values.loginId,
-          password: values.password,
-        });
-
-        if (userInfoRes.token) {
-          Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', userInfoRes.token, {
-            expires: 3,
-            path: '/',
-          });
-          return router.push('/home');
-        } else {
-          return setErrorMessage(userInfoRes.errorMessage);
-        }
-      } catch (err) {
-        console.log('err', err);
-      }
+    (values) => {
+      return login({ loginId: values.loginId, password: values.password });
     },
-    [triggerLogin, router],
+    [login],
   );
+
+  // 로그인 성공
+  useEffect(() => {
+    if (loginData) {
+      const { token } = loginData;
+      Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', token, {
+        expires: 3,
+        path: '/',
+      });
+      router.push('/home');
+    }
+  }, [loginData, router]);
+
+  // 로그인 실패
+  useEffect(() => {
+    if (loginError) {
+      return setErrorMessage('회원정보를 찾을 수 없습니다.');
+    }
+  }, [loginError]);
 
   const isValid =
     !!watch('loginId') && !!watch('password') && Object.keys(errors).length < 1;
