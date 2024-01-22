@@ -1,4 +1,5 @@
 import Image from 'next/image';
+
 import Logo from '../../../public/dev-admin-logo.svg';
 import LoginForm from '@/components/Login/LoginForm';
 

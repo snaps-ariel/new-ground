@@ -1,13 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
-import InputField from '@/common/fields/inputField';
-import { required, validEmail } from '@/utils/validate';
 import { ILoginUser } from '@/app/model/user';
+import { useLogin } from '@/api/login';
+import Input from '@/form/Input';
 
-export default function LoginForm({ login }) {
+import { required, validEmail } from '@/utils/validate';
+
+export default function LoginForm() {
+  const router = useRouter();
+  const {
+    data: loginData,
+    trigger: login,
+    isMutating: isMutatingLogin,
+    error: loginError,
+  } = useLogin();
   const {
     register,
     handleSubmit,
@@ -15,21 +26,41 @@ export default function LoginForm({ login }) {
     formState: { errors },
     setError,
     control,
-    reset,
   } = useForm<ILoginUser>({ mode: 'onChange' });
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const onSubmit: SubmitHandler<ILoginUser> = async (data) => {
-    await login(data.email, data.password);
-    reset();
-  };
+  const onSubmit: SubmitHandler<ILoginUser> = useCallback(
+    (values) => {
+      return login({ loginId: values.loginId, password: values.password });
+    },
+    [login],
+  );
+
+  // 로그인 성공
+  useEffect(() => {
+    if (loginData) {
+      const { token } = loginData;
+      Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', token, {
+        expires: 3,
+        path: '/',
+      });
+      router.push('/home');
+    }
+  }, [loginData, router]);
+
+  // 로그인 실패
+  useEffect(() => {
+    if (loginError) {
+      return setErrorMessage('회원정보를 찾을 수 없습니다.');
+    }
+  }, [loginError]);
 
   const isValid =
     !!watch('loginId') && !!watch('password') && Object.keys(errors).length < 1;
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <InputField
+      <Input
         name={'loginId'}
         placeholder={'이메일'}
         register={register('loginId', {
@@ -38,9 +69,10 @@ export default function LoginForm({ login }) {
         })}
         errors={errors}
         control={control}
+        disabled={isMutatingLogin}
       />
 
-      <InputField
+      <Input
         name={'password'}
         type={'password'}
         placeholder={'비밀번호'}
@@ -49,6 +81,7 @@ export default function LoginForm({ login }) {
         })}
         errors={errors}
         control={control}
+        disabled={isMutatingLogin}
       />
 
       {!!errorMessage && (
