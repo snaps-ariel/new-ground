@@ -43,6 +43,7 @@ export default function Input({
   return (
     <div className="relative block text-left">
       <input
+        aria-label={name}
         className="w-full h-[50px] border-gray-300 border-b"
         type={type}
         placeholder={placeholder}
@@ -55,6 +56,7 @@ export default function Input({
       {isError && (
         <span
           className="text-[#f02222] text-[12px] leading-[34px]"
+          role={'alert'}
           dangerouslySetInnerHTML={{
             __html: breakLines(errors[name]?.message as string),
           }}
