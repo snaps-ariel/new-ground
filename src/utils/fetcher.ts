@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 interface IRequestOptions {
+  baseURL?: string;
   method?: string;
   headers?: Headers;
   mode?: string;
@@ -48,6 +49,7 @@ const fetcher =
   (defaultOptions: IDefaultOptions) =>
   async (url: string, options: IRequestOptions = {}) => {
     const requestOptions: IRequestOptions = {
+      baseURL: options.baseURL || process.env.NEXT_PUBLIC_API_URL,
       method: options.method || 'GET',
       headers: new Headers(defaultOptions.headers),
       mode: defaultOptions.mode,
@@ -56,7 +58,7 @@ const fetcher =
 
     defaultOptions.interceptors.request(requestOptions);
 
-    const fullURL = defaultOptions.baseURL + url;
+    const fullURL = requestOptions.baseURL + url;
 
     if (requestOptions.method === 'POST' && requestOptions.body !== undefined) {
       requestOptions.body = JSON.stringify(requestOptions.body);

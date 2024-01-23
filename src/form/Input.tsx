@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form';
 import Image from 'next/image';
 
-import { ILoginUser } from '@/app/model/user';
+import { ILoginUser } from '@/model/user';
 import { breakLines } from '@/utils/string';
 import Check from '../../public/check.svg';
 

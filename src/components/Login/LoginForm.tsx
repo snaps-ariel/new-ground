@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-import { ILoginUser } from '@/app/model/user';
+import { ILoginUser } from '@/model/user';
 import { useLogin } from '@/api/login';
 import Input from '@/form/Input';
 

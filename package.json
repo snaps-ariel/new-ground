@@ -12,7 +12,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@qiuz/react-image-map": "^1.1.8",
     "@types/js-cookie": "^3.0.6",
+    "ag-grid-react": "^31.0.2",
     "axios": "^1.6.5",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
@@ -31,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "ag-grid-community": "^31.0.2",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
@@ -41,6 +44,7 @@
     "lint-staged": "^13.1.4",
     "postcss": "^8.4.32",
     "prettier": "3.1.1",
+    "react-image-crop": "^11.0.5",
     "tailwindcss": "^3.4.0",
     "typescript": "^5"
   }
