@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 import Logo from '@/components/common/Logo';
-import Dropdown from '@/components/Sidebar/Dropdown';
+import SubMenu from '@/components/Sidebar/SubMenu';
 
 import {
   ArrowDownIcon,
@@ -92,7 +92,7 @@ const menuData = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [openedDropdown, setOpenedDropdown] = useState<null | string>(null);
+  const [openedMenu, setOpenedMenu] = useState<null | string>(null);
 
   const handleMenuClick = (
     e: React.MouseEvent<HTMLLIElement>,
@@ -102,16 +102,14 @@ export default function Sidebar() {
     e.stopPropagation();
 
     if (!isDropdown) {
-      if (openedDropdown && !link.includes(openedDropdown)) {
-        setOpenedDropdown(null);
+      if (openedMenu && !link.includes(openedMenu)) {
+        setOpenedMenu(null);
       }
       return;
     }
 
     if (isDropdown) {
-      link === openedDropdown
-        ? setOpenedDropdown(null)
-        : setOpenedDropdown(link);
+      link === openedMenu ? setOpenedMenu(null) : setOpenedMenu(link);
     }
   };
 
@@ -151,8 +149,8 @@ export default function Sidebar() {
                         </div>
                       )}
                     </Link>
-                    {subMenu && openedDropdown?.includes(link) && (
-                      <Dropdown
+                    {subMenu && openedMenu?.includes(link) && (
+                      <SubMenu
                         key={`${id}-${subMenu}`}
                         subMenu={subMenu}
                         onClick={handleMenuClick}

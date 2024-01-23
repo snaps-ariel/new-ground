@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-interface IDropdownProps {
+interface ISubMenuProps {
   subMenu: subMenu[];
   onClick: (e: React.MouseEvent<HTMLLIElement>, link: string) => void;
 }
@@ -11,7 +11,7 @@ type subMenu = {
   title: string;
   link: string;
 };
-export default function Dropdown({ subMenu, onClick }: IDropdownProps) {
+export default function SubMenu({ subMenu, onClick }: ISubMenuProps) {
   const pathname = usePathname();
 
   return (
