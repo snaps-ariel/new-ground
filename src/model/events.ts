@@ -47,3 +47,13 @@ export interface IBannerData {
   titleImage: string | null;
   type: string;
 }
+
+export interface IMapArea {
+  desc: object;
+  height: string;
+  key: string;
+  left: string;
+  top: string;
+  type: string;
+  width: string;
+}

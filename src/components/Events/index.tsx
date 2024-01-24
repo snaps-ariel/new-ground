@@ -7,6 +7,7 @@ import { IEventList } from '@/model/events';
 import { columnDefs, defaultColDef } from '@/components/Events/definition';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+
 type Props = {
   eventData: {
     list: IEventList[];
@@ -23,7 +24,6 @@ export default function Events({ eventData }: Props) {
     router.push(`/events/${country}/${service}/imageMapGenerator?idx=${idx}`);
   };
 
-  console.log('eventData', eventData);
   return (
     <div className="w-full">
       <div className="ag-theme-alpine w-full" id="eventsGird">
