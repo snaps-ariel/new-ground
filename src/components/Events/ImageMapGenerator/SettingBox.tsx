@@ -4,7 +4,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useParams } from 'next/navigation';
 import { OPM_EVENT_TYPE, SNAPS_EVENT_TYPE } from '@/configs/image-map';
 import { IMapArea } from '@/model/events';
