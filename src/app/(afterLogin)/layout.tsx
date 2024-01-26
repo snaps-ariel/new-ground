@@ -25,7 +25,7 @@ export default function RootLayout({
         <header className="sticky top-0 bg-black z-10 border-b">
           <div className="max-w-screen-xl mx-auto">navbar</div>
         </header>
-        <main className="w-full flex justify-center max-w-screen-xl mx-auto">
+        <main className="w-full flex justify-center max-w-screen-2xl mx-auto">
           {children}
         </main>
       </SWRConfigContext>

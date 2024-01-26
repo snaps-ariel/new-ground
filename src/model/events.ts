@@ -49,11 +49,31 @@ export interface IBannerData {
 }
 
 export interface IMapArea {
-  desc: object;
+  desc: {
+    goLink_url?: string;
+    openLayerPopup?: string;
+    isNeedLogin?: string | null;
+    goOutLink_url?: string;
+    getCoupon_code?: string;
+    getCoupon_issueCode?: string;
+    copyText_text?: string;
+    goKakaoChannel?: string;
+    shareKakao?: string;
+    shareKakao_eventCode?: string;
+    setGif?: string;
+    setCustomFunction?: string;
+    setCustomFunction_functionName?: string;
+    youtubeUrl?: string;
+  };
   height: string;
   key: string;
   left: string;
   top: string;
   type: string;
   width: string;
+  style?: {
+    backgroundColor: string;
+    border: string;
+  };
+  render?: () => void;
 }

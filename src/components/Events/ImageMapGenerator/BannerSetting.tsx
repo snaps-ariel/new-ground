@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ChangeEvent, Dispatch } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface IPreview {
   // 추가
@@ -10,7 +10,7 @@ interface IPreview {
 
 type Props = {
   preview: IPreview | null | undefined;
-  setPreview: Dispatch<React.SetStateAction<IPreview | null | undefined>>;
+  setPreview: Dispatch<SetStateAction<IPreview | null | undefined>>;
 };
 
 export default function BannerSetting({ preview, setPreview }: Props) {

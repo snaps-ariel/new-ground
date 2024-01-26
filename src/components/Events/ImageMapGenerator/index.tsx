@@ -4,27 +4,21 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { Crop, ReactCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { ImageMap } from '@qiuz/react-image-map';
 
 import { IMapArea } from '@/model/events';
-import { ImageMap } from '@qiuz/react-image-map';
+import SettingBox from '@/components/Events/ImageMapGenerator/SettingBox';
 
 type Props = {
   getMapData: IMapArea[];
 };
 
-interface IPreview {
-  // 추가
-  banners: {
-    previewWebBanner: string;
-  };
-}
-
 export default function ImageMapGenerator({ getMapData }: Props) {
   const { country, service } = useParams();
   const searchParams = useSearchParams();
 
-  const [preview, setPreview] = useState<IPreview | null>();
-  const [mapArea, setMapArea] = useState(getMapData || []);
+  // const [preview, setPreview] = useState<IPreview | null>();
+  const [mapArea, setMapArea] = useState<IMapArea[] | []>(getMapData || []);
   const [crop, setCrop] = useState<Crop | undefined>({
     unit: '%',
     width: 0,
@@ -83,6 +77,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
             ruleOfThirds={true}
             style={{ display: 'block' }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={imageUrl} alt={'image'} />
           </ReactCrop>
           {imageUrl ? (
@@ -112,7 +107,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
           <ImageMap
             className="usage-map"
             src={imageUrl}
-            map={mapArea}
+            map={mapArea as []}
             alt="React Image Map"
             style={{
               display: 'flex',
@@ -126,14 +121,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
         </div>
       </section>
 
-      {/*{mapArea.map((map, idx) => (*/}
-      {/*  <SettingBox*/}
-      {/*    key={idx}*/}
-      {/*    mapArea={map}*/}
-      {/*    index={idx}*/}
-      {/*    setMapArea={setMapArea}*/}
-      {/*  />*/}
-      {/*))}*/}
+      <SettingBox mapArea={mapArea} setMapArea={setMapArea} />
     </div>
   );
 }
