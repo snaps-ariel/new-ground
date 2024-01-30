@@ -15,7 +15,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">주소</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="이동 URL"
             onChange={(e) => onChange({ goLink_url: e.target.value })}
@@ -28,7 +28,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">팝업 이름</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="팝업 이름"
             onChange={(e) =>
@@ -41,7 +41,7 @@ export default function ActionForm({ watchType, field }: Props) {
           />
           <label className="m-1.5">로그인 필요 여부</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="boolean"
             onChange={(e) =>
@@ -59,7 +59,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">주소</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[120px] rounded-bl h-8 px-2"
             type="text"
             placeholder="이동 URL"
             onChange={(e) => onChange({ goOutLink_url: e.target.value })}
@@ -72,7 +72,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">이벤트 코드</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="이벤트 코드"
             onChange={(e) =>
@@ -85,7 +85,7 @@ export default function ActionForm({ watchType, field }: Props) {
           />
           <label className="m-1.5">이벤트 코드</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="이슈 코드"
             onChange={(e) =>
@@ -103,7 +103,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">텍스트</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="텍스트"
             onChange={(e) => onChange({ copyText_text: e.target.value })}
@@ -116,7 +116,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">채널 주소</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="채널 주소"
             onChange={(e) => onChange({ goKakaoChannel: e.target.value })}
@@ -129,7 +129,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">템플릿 ID</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="템플릿 ID"
             onChange={(e) =>
@@ -142,7 +142,7 @@ export default function ActionForm({ watchType, field }: Props) {
           />
           <label className="m-1.5">이벤트 코드</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="이벤트 코드"
             onChange={(e) =>
@@ -160,7 +160,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">gif 파일 이름</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="(OPM/SNAPS)-xxx"
             onChange={(e) => onChange({ setGif: e.target.value })}
@@ -173,14 +173,14 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">함수명</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="함수명"
             onChange={(e) => onChange({ setCustomFunction: e.target.value })}
             defaultValue={value.setCustomFunction || null}
           />
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[230px] rounded-bl h-8 px-2"
             type="text"
             placeholder="전달할 parameter"
             onChange={(e) =>
@@ -195,7 +195,7 @@ export default function ActionForm({ watchType, field }: Props) {
         <div>
           <label className="m-1.5">주소</label>
           <input
-            className="border-solid border-[1px]"
+            className="border-solid border-[1px] border-[#d9d9d9] w-[120px] rounded-bl h-8 px-2"
             type="text"
             placeholder="재생 URL"
             onChange={(e) => onChange({ youtubeUrl: e.target.value })}

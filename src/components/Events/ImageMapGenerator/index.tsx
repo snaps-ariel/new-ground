@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, EventHandler, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { Crop, ReactCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -19,6 +19,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
 
   // const [preview, setPreview] = useState<IPreview | null>();
   const [mapArea, setMapArea] = useState<IMapArea[] | []>(getMapData || []);
+  const [isAppend, setIsAppend] = useState<boolean>(false);
   const [crop, setCrop] = useState<Crop | undefined>({
     unit: '%',
     width: 0,
@@ -65,12 +66,21 @@ export default function ImageMapGenerator({ getMapData }: Props) {
     setCrop(percentCrop);
   };
 
+  const onClickCropImage = (event: React.MouseEvent<HTMLDivElement>) => {
+    const cropElement = document.querySelector('.ReactCrop__crop-selection');
+    const isDoubleClicked = event.detail >= 2;
+    if (event.target === cropElement && isDoubleClicked) {
+      setIsAppend(true);
+    }
+  };
+
+  console.log('mapArea', mapArea);
   return (
     <div className="w-lvw h-lvh">
       <h2 className="mb-[40px]">snaps kr</h2>
       {/*<BannerSetting preview={preview} setPreview={setPreview} />*/}
       <section className="flex gap-x-[20px]">
-        <div className="relative">
+        <div className="relative" onClick={onClickCropImage}>
           <ReactCrop
             crop={crop}
             onChange={onCropChange}
@@ -121,7 +131,14 @@ export default function ImageMapGenerator({ getMapData }: Props) {
         </div>
       </section>
 
-      <SettingBox mapArea={mapArea} setMapArea={setMapArea} />
+      <SettingBox
+        isAppend={isAppend}
+        setIsAppend={setIsAppend}
+        crop={crop}
+        setCrop={setCrop}
+        mapArea={mapArea}
+        setMapArea={setMapArea}
+      />
     </div>
   );
 }
