@@ -1,40 +1,33 @@
-import { ColDef } from 'ag-grid-community';
+import { TableProps } from 'antd';
+import { IEventList } from '@/model/events';
 
-export const columnDefs: ColDef[] = [
+export const columns: TableProps<IEventList>['columns'] = [
   {
-    field: 'idx',
-    headerName: '순번',
-    width: 100,
-    editable: false,
+    title: '순번',
+    dataIndex: 'idx',
+    key: 'idx',
   },
   {
-    field: 'title',
-    headerName: '이벤트 명',
-    width: 240,
-    filter: true,
+    title: '이벤트 명',
+    dataIndex: 'title',
+    key: 'title',
   },
   {
-    field: 'description',
-    headerName: '이벤트 설명',
-    width: 360,
+    title: '이벤트 설명',
+    dataIndex: 'description',
+    key: 'description',
   },
   {
-    field: 'startDate',
-    headerName: '시작 날짜',
-    width: 140,
+    title: '시작 날짜',
+    dataIndex: 'startDate',
+    key: 'startDate',
   },
   {
-    field: 'endDate',
-    headerName: '종료 날짜',
-    width: 140,
+    title: '종료 날짜',
+    dataIndex: 'endDate',
+    key: 'endDate',
   },
 ];
-
-export const defaultColDef: ColDef = {
-  width: 50,
-  filter: 'agTextColumnFilter',
-  resizable: true,
-};
 
 export const SNAPS_EVENT_TYPE = [
   { label: '내부 링크', value: 'goLink' },
@@ -60,3 +53,16 @@ export const OPM_EVENT_TYPE = [
   { label: 'gif 추가', value: 'setGif' },
   { label: '커스텀 함수 매핑', value: 'setCustomFunction' },
 ];
+
+export const boxStyle = {
+  backgroundColor: 'rgba(169, 169, 169, 0.5)',
+  border: '1px solid rgba(255, 0, 0, 0.5)',
+};
+export const boxSpanStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'rgba(255, 255, 0, 0.5)',
+  height: '100%',
+  fontSize: '20px',
+};

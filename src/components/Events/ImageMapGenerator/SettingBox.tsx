@@ -49,14 +49,7 @@ export default function SettingBox({
   const [uploadedFileInfo, setUploadedFileInfo] = useState<File | null>(null);
   const searchParams = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setError,
-    control,
-  } = useForm<FormValues>({
+  const { register, handleSubmit, watch, control } = useForm<FormValues>({
     defaultValues: {
       mapArea: mapArea,
     },

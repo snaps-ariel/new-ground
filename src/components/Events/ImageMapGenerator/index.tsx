@@ -8,19 +8,37 @@ import { ImageMap } from '@qiuz/react-image-map';
 
 import { IMapArea } from '@/model/events';
 import SettingBox from '@/components/Events/ImageMapGenerator/SettingBox';
+import { useGetParams } from '@/hooks/useGetParams';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Card, Form, Input, Space, Typography, Select } from 'antd';
+import { FieldData } from 'rc-field-form/es/interface';
+import { boxSpanStyle, boxStyle } from '@/components/Events/definition';
+import { OPM_EVENT_TYPE, SNAPS_EVENT_TYPE } from '@/configs/image-map';
+import { v4 as uuidv4 } from 'uuid';
+import ActionForms from '@/components/Events/ImageMapGenerator/ActionForms';
 
 type Props = {
   getMapData: IMapArea[];
 };
 
 export default function ImageMapGenerator({ getMapData }: Props) {
-  const { country, service } = useParams();
   const searchParams = useSearchParams();
+  const { country, service, device, idx } = useGetParams();
+  const isSnaps = service === 'snaps';
+  const imageUrl = isSnaps
+    ? `${process.env.NEXT_PUBLIC_SNAPS_KR_S3}/${
+        device === 'mobile' ? 'mobile' : 'desktop'
+      }/${country}/map_event/${idx}/${device}/e_body/eventBody-${idx}.jpg`
+    : `${process.env.NEXT_PUBLIC_OPM_KR_S3}/map_event/${idx}/${device}/e_body/eventBody-${idx}.jpg`;
+  const eventType = service === 'snaps' ? SNAPS_EVENT_TYPE : OPM_EVENT_TYPE;
 
   // const [preview, setPreview] = useState<IPreview | null>();
-  const [mapArea, setMapArea] = useState<IMapArea[] | []>(getMapData || []);
+  const [form] = Form.useForm<{ items: IMapArea[] }>();
+  const [mapArea, setMapArea] = useState<IMapArea[] | []>([]);
   const [isAppend, setIsAppend] = useState<boolean>(false);
-  const [crop, setCrop] = useState<Crop | undefined>({
+  const [crop, setCrop] = useState<Crop | {}>({
     unit: '%',
     width: 0,
     height: 0,
@@ -28,39 +46,19 @@ export default function ImageMapGenerator({ getMapData }: Props) {
     y: 0,
   });
 
-  const isSnaps = service === 'snaps';
-  const idx = searchParams.get('idx');
-  const imageUrl = isSnaps
-    ? `${process.env.NEXT_PUBLIC_SNAPS_KR_S3}/desktop/${country}/map_event/${idx}/pc/e_body/eventBody-${idx}.jpg`
-    : `${process.env.NEXT_PUBLIC_OPM_KR_S3}/map_event/${idx}/pc/e_body/eventBody-${idx}.jpg`;
-
   useEffect(() => {
-    setMapArea((prev) =>
-      prev.map((map, idx) => {
-        return {
-          ...map,
-          style: {
-            backgroundColor: 'rgba(169, 169, 169, 0.5)',
-            border: '1px solid rgba(255, 0, 0, 0.5)',
-          },
-          render: () => (
-            <span
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'rgba(255, 255, 0, 0.5)',
-                height: '100%',
-                fontSize: '20px',
-              }}
-            >
-              map {idx + 1}
-            </span>
-          ),
-        };
-      }),
-    );
-  }, [getMapData]);
+    if (mapArea.length === 0) {
+      setMapArea(() =>
+        getMapData.map((map, idx) => {
+          return {
+            ...map,
+            style: boxStyle,
+            render: () => <span style={boxSpanStyle}>map {idx + 1}</span>,
+          };
+        }),
+      );
+    }
+  }, [getMapData, mapArea.length]);
 
   const onCropChange = (crop: Crop, percentCrop: Crop) => {
     setCrop(percentCrop);
@@ -69,12 +67,45 @@ export default function ImageMapGenerator({ getMapData }: Props) {
   const onClickCropImage = (event: React.MouseEvent<HTMLDivElement>) => {
     const cropElement = document.querySelector('.ReactCrop__crop-selection');
     const isDoubleClicked = event.detail >= 2;
+    const { items } = form.getFieldsValue();
+
     if (event.target === cropElement && isDoubleClicked) {
-      setIsAppend(true);
+      const { height, width, x: left, y: top, unit } = crop as Crop;
+      const getPercentCrop = {
+        key: uuidv4(),
+        width: `${width}${unit}`,
+        height: `${height}${unit}`,
+        left: `${left}${unit}`,
+        top: `${top}${unit}`,
+        type: eventType[0].value,
+        desc: {},
+        style: boxStyle,
+        render: () => <span style={boxSpanStyle}>map {items.length}</span>,
+      };
+
+      // mapArea 상태 추가
+      setMapArea((prev) => [...prev, getPercentCrop]);
+      // Form 추가
+      items.push(getPercentCrop);
+      form.setFieldsValue({ items });
+
+      setCrop({});
+      return;
     }
   };
 
-  console.log('mapArea', mapArea);
+  const onFinish = (values: any) => {
+    console.log('Received values of form:', values);
+    setMapArea((prev) => prev);
+  };
+
+  const handleChange = (value: string, name: number) => {
+    const { items } = form.getFieldsValue();
+    items.splice(name, 1, { ...items[name], desc: {} });
+    form.setFieldsValue({ items });
+  };
+
+  console.log(form);
   return (
     <div className="w-lvw h-lvh">
       <h2 className="mb-[40px]">snaps kr</h2>
@@ -82,7 +113,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
       <section className="flex gap-x-[20px]">
         <div className="relative" onClick={onClickCropImage}>
           <ReactCrop
-            crop={crop}
+            crop={crop as Crop}
             onChange={onCropChange}
             ruleOfThirds={true}
             style={{ display: 'block' }}
@@ -110,7 +141,7 @@ export default function ImageMapGenerator({ getMapData }: Props) {
               );
             })
           ) : (
-            <div className="img-none">이미지를 등록해 주세요.</div>
+            <div>이미지를 등록해 주세요.</div>
           )}
         </div>
         <div className="relative">
@@ -131,14 +162,101 @@ export default function ImageMapGenerator({ getMapData }: Props) {
         </div>
       </section>
 
-      <SettingBox
-        isAppend={isAppend}
-        setIsAppend={setIsAppend}
-        crop={crop}
-        setCrop={setCrop}
-        mapArea={mapArea}
-        setMapArea={setMapArea}
-      />
+      {mapArea.length > 0 && (
+        <>
+          <Form
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            form={form}
+            name="dynamic_form_complex"
+            autoComplete="off"
+            // initialValues={{ items: mapArea }}
+            onFinish={onFinish}
+          >
+            <Form.List name="items" initialValue={mapArea}>
+              {(fields, { add, remove }) => (
+                <div
+                  style={{
+                    display: 'flex',
+                    rowGap: 16,
+                    flexDirection: 'column',
+                    margin: '20px 0',
+                  }}
+                >
+                  {fields.map(({ name, key }) => {
+                    const getType = form.getFieldValue('items')[name]?.type;
+                    return (
+                      <div key={key} className="flex items-center">
+                        <label className="mr-[20px]">{`map ${key + 1}`}</label>
+                        <Form.Item
+                          style={{ marginBottom: '0' }}
+                          label="width"
+                          name={[name, 'width']}
+                        >
+                          <Input />
+                        </Form.Item>
+                        <Form.Item
+                          style={{ marginBottom: '0' }}
+                          label="height"
+                          name={[name, 'height']}
+                        >
+                          <Input />
+                        </Form.Item>
+                        <Form.Item
+                          style={{ marginBottom: '0' }}
+                          label="left"
+                          name={[name, 'left']}
+                        >
+                          <Input />
+                        </Form.Item>
+                        <Form.Item
+                          style={{ marginBottom: '0' }}
+                          label="top"
+                          name={[name, 'top']}
+                        >
+                          <Input />
+                        </Form.Item>
+                        <Form.Item
+                          style={{ marginBottom: '0' }}
+                          label="type"
+                          name={[name, 'type']}
+                        >
+                          <Select
+                            options={eventType}
+                            onChange={(e) => handleChange(e, name)}
+                          />
+                        </Form.Item>
+                        <ActionForms name={name} type={getType} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </Form.List>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+            <Form.Item noStyle shouldUpdate>
+              {() => (
+                <Typography>
+                  <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
+                </Typography>
+              )}
+            </Form.Item>
+          </Form>
+        </>
+      )}
+
+      {/*<SettingBox*/}
+      {/*  isAppend={isAppend}*/}
+      {/*  setIsAppend={setIsAppend}*/}
+      {/*  crop={crop}*/}
+      {/*  setCrop={setCrop}*/}
+      {/*  mapArea={mapArea}*/}
+      {/*  setMapArea={setMapArea}*/}
+      {/*/>*/}
     </div>
   );
 }

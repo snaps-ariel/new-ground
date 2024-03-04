@@ -8,27 +8,24 @@ type Props = {
   };
   searchParams: {
     idx: string;
+    device?: string;
   };
 };
-export default async function EventCreatePage({ params, searchParams }: Props) {
+export default async function ImageMapGeneratorPage({
+  params,
+  searchParams,
+}: Props) {
   const { country, service } = params;
-  const { idx } = searchParams;
-
-  // const getBannerData = await customFetcher(
-  //   '/desktop/kor/eventBanners/web.json?idx=1904',
-  //   {
-  //     method: 'GET',
-  //     baseURL: process.env.NEXT_PUBLIC_SNAPS_KR_S3,
-  //   },
-  // );
-  // const getDetailData = data?.find(
-  //   (el: IEventList) => el.idx === parseInt(idx),
-  // );
+  const { idx, device } = searchParams;
+  const deviceParam = device || 'pc';
 
   const isSnaps = service === 'snaps';
   const url = isSnaps
-    ? `/desktop/${country}/map_event/${idx}/pc/e_body/eventBody-${idx}.json`
-    : `/map_event/${idx}/pc/e_body/eventBody-${idx}.json`;
+    ? `/${
+        deviceParam === 'mobile' ? 'mobile' : 'desktop'
+      }/${country}/map_event/${idx}/${deviceParam}/e_body/eventBody-${idx}.json`
+    : `/map_event/${idx}/${deviceParam}/e_body/eventBody-${idx}.json`;
+
   const baseUrl = isSnaps
     ? process.env.NEXT_PUBLIC_SNAPS_KR_S3
     : process.env.NEXT_PUBLIC_OPM_KR_S3;

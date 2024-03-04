@@ -17,6 +17,7 @@ interface IDefaultOptions {
   headers: {
     'Content-type': string;
     'X-SNAPS-CHANNEL': string;
+    'X-OHPRINT-CHANNEL': string;
   };
   mode: string;
   interceptors: IInterceptors;
@@ -27,6 +28,7 @@ const defaultOptions: IDefaultOptions = {
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
     'X-SNAPS-CHANNEL': 'DA_WEB',
+    // 'X-OHPRINT-CHANNEL': 'DA_WEB',
   },
   mode: 'cors',
   interceptors: {
@@ -67,6 +69,7 @@ const fetcher =
     try {
       const response = await fetch(fullURL, requestOptions);
       if (!response.ok) {
+        console.log('fullURL', fullURL);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 

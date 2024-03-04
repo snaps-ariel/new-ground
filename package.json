@@ -15,7 +15,7 @@
     "@aws-sdk/client-s3": "^3.501.0",
     "@qiuz/react-image-map": "^1.1.8",
     "@types/js-cookie": "^3.0.6",
-    "ag-grid-react": "^31.0.2",
+    "antd": "^5.13.3",
     "axios": "^1.6.5",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
@@ -24,6 +24,7 @@
     "react-hook-form": "^7.49.2",
     "swr": "^2.2.4",
     "ts-node": "^10.9.2",
+    "uuid": "^9.0.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
@@ -34,7 +35,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "ag-grid-community": "^31.0.2",
+    "@types/uuid": "^9.0.8",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
