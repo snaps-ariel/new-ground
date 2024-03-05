@@ -1,18 +1,10 @@
 import '../globals.css';
-import { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 
 import SWRConfigContext from '@/context/SWRConfigContext';
+import Sidebar from '@/components/Sidebar';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: {
-    default: 'GrounD | Webling',
-    template: 'GrounD | %s',
-  },
-  description: 'GrounD for Webling',
-};
 
 export default function RootLayout({
   children,
@@ -22,10 +14,8 @@ export default function RootLayout({
   return (
     <>
       <SWRConfigContext>
-        <header className="sticky top-0 bg-black z-10 border-b">
-          <div className="max-w-screen-xl mx-auto">navbar</div>
-        </header>
-        <main className="w-full flex justify-center max-w-screen-2xl mx-auto">
+        <Sidebar />
+        <main className="w-full flex justify-center max-w-screen-xl mx-auto">
           {children}
         </main>
       </SWRConfigContext>
