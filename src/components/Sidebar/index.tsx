@@ -29,7 +29,7 @@ const menuData = [
           {
             id: 0,
             title: '이미지맵 등록',
-            link: '/opm/events/image-map',
+            link: '/events/kor/opm',
           },
         ],
       },
@@ -62,7 +62,19 @@ const menuData = [
   {
     serviceName: 'SNAPS',
     menus: [
-      { id: 0, icon: <EventsIcon />, title: '이벤트', link: '/snaps/events' },
+      {
+        id: 0,
+        icon: <EventsIcon />,
+        title: '이벤트',
+        link: '/snaps/events',
+        subMenu: [
+          {
+            id: 0,
+            title: '이미지맵 등록',
+            link: '/events/kor/snaps',
+          },
+        ],
+      },
       {
         id: 1,
         icon: <BannerOrderIcon />,
@@ -85,6 +97,17 @@ const menuData = [
         icon: <UploadIcon />,
         title: 'S3 업로드',
         link: '/developer/upload',
+      },
+    ],
+  },
+  {
+    serviceName: '계정',
+    menus: [
+      {
+        id: 0,
+        icon: <InvalidateIcon />,
+        title: '로그아웃',
+        link: '/logout',
       },
     ],
   },

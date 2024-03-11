@@ -21,6 +21,7 @@ export default async function EventPage({ params, searchParams }: Props) {
     {
       method: 'GET',
       baseURL: baseUrl,
+      ...(service === 'opm' && { headers: { 'X-OHPRINT-CHANNEL': 'DA_WEB' } }),
     },
   );
 

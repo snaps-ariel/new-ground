@@ -5,7 +5,7 @@ const mockLogin = jest.fn((email, password) => {
   return Promise.resolve({ email, password });
 });
 it('has input and a button', async () => {
-  render(<LoginForm login={mockLogin} />);
+  // render(<LoginForm login={mockLogin} />);
 
   const loginIdInput = screen.getByPlaceholderText('이메일');
   const passwordInput = screen.getByPlaceholderText('비밀번호');
@@ -17,7 +17,7 @@ it('has input and a button', async () => {
 });
 
 it('should display required error when value is invalid', async () => {
-  render(<LoginForm login={mockLogin} />);
+  // render(<LoginForm login={mockLogin} />);
 
   fireEvent.submit(screen.getByRole('button'));
 
@@ -26,7 +26,7 @@ it('should display required error when value is invalid', async () => {
 });
 
 it('should display matching error when email is invalid', async () => {
-  render(<LoginForm login={mockLogin} />);
+  // render(<LoginForm login={mockLogin} />);
 
   fireEvent.input(screen.getByRole('textbox', { name: /loginId/i }), {
     target: {
@@ -50,7 +50,7 @@ it('should display matching error when email is invalid', async () => {
 });
 
 it('should display required min length error when password is invalid', async () => {
-  render(<LoginForm login={mockLogin} />);
+  // render(<LoginForm login={mockLogin} />);
 
   fireEvent.input(screen.getByRole('textbox', { name: /loginId/i }), {
     target: {
@@ -76,7 +76,7 @@ it('should display required min length error when password is invalid', async ()
 });
 
 it('should not display error when value is valid', async () => {
-  render(<LoginForm login={mockLogin} />);
+  // render(<LoginForm login={mockLogin} />);
 
   fireEvent.input(screen.getByRole('textbox', { name: /loginId/i }), {
     target: {

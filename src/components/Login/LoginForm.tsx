@@ -42,7 +42,6 @@ export default function LoginForm() {
       const { token } = loginData;
       Cookies.set('OH_PRINT_ME_GROUND_USER_TOKEN', token, {
         expires: 3,
-        path: '/',
       });
       router.push('/home');
     }

@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 interface IRequestOptions {
   baseURL?: string;
   method?: string;
-  headers?: Headers;
+  headers?: Headers | {} | undefined;
   mode?: string;
   cache?: string;
   body?: Record<string, any> | string;
@@ -17,7 +17,6 @@ interface IDefaultOptions {
   headers: {
     'Content-type': string;
     'X-SNAPS-CHANNEL': string;
-    'X-OHPRINT-CHANNEL': string;
   };
   mode: string;
   interceptors: IInterceptors;
@@ -28,7 +27,6 @@ const defaultOptions: IDefaultOptions = {
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
     'X-SNAPS-CHANNEL': 'DA_WEB',
-    // 'X-OHPRINT-CHANNEL': 'DA_WEB',
   },
   mode: 'cors',
   interceptors: {
@@ -41,7 +39,9 @@ const defaultOptions: IDefaultOptions = {
         if (!args.headers) {
           args.headers = new Headers();
         }
-        args.headers.set('X-SNAPS-TOKEN', token);
+        if (args.headers instanceof Headers) {
+          args.headers.set('X-SNAPS-TOKEN', token);
+        }
       }
     },
   },
@@ -53,7 +53,7 @@ const fetcher =
     const requestOptions: IRequestOptions = {
       baseURL: options.baseURL || process.env.NEXT_PUBLIC_API_URL,
       method: options.method || 'GET',
-      headers: new Headers(defaultOptions.headers),
+      headers: new Headers(options.headers || defaultOptions.headers),
       mode: defaultOptions.mode,
       ...options,
     };
@@ -69,7 +69,6 @@ const fetcher =
     try {
       const response = await fetch(fullURL, requestOptions);
       if (!response.ok) {
-        console.log('fullURL', fullURL);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 

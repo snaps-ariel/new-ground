@@ -1,3 +1,3 @@
-export default function OpmEventsPage() {
-  return <div>opm events page</div>;
+export default function SnapsEventsPage() {
+  return <div>SNAPS events</div>;
 }

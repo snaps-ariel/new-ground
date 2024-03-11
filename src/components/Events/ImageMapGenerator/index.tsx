@@ -105,7 +105,6 @@ export default function ImageMapGenerator({ getMapData }: Props) {
     form.setFieldsValue({ items });
   };
 
-  console.log(form);
   return (
     <div className="w-lvw h-lvh">
       <h2 className="mb-[40px]">snaps kr</h2>

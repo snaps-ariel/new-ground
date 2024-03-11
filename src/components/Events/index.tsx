@@ -103,13 +103,14 @@ export default function Events({ eventData }: Props) {
         <Table
           columns={columns}
           dataSource={eventData?.list}
+          rowKey={(record) => record.idx}
           pagination={{
             current: parseInt(page),
             pageSize: 20,
             onChange: onChangePagination,
           }}
           size={'middle'}
-          onRow={(record) => {
+          onRow={(record, rowIndex) => {
             return {
               onClick: () => handleClickEvent(record),
               style: { cursor: 'pointer' },
